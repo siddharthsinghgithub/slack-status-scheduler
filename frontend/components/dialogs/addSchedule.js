@@ -57,8 +57,8 @@ const AddSchedule = ({
     if (activeStep + 1 === steps.length) {
       await axios.post(`${backendUrl}/schedules/add`, {
         ...data,
-        token: userData.access_token,
-        userId: userData.user_id
+        token: userData.token,
+        userId: userData.id
       });
       setData(initialState);
       handleClose();

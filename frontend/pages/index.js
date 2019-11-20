@@ -58,12 +58,12 @@ const Home = () => {
   }, [userData]);
 
   const getSchedules = async () => {
-    if (!(userData && userData.user_id)) {
+    if (!(userData && userData.email)) {
       return;
     }
     try {
       const { data } = await axios.get(
-        `${backendUrl}/schedules?userId=${userData.user_id}`
+        `${backendUrl}/schedules?userId=${userData.id}`
       );
       setSchedules(data);
     } catch (error) {
@@ -126,7 +126,7 @@ const Home = () => {
     <React.Fragment>
       <Navbar userData={userData} logout={logout} />
       <div className={classes.schedules}>
-        {userData && userData.user_id ? (
+        {userData && userData.email ? (
           <React.Fragment>
             <div className={classes.schedule}>
               <Typography variant="h5" component="h3">

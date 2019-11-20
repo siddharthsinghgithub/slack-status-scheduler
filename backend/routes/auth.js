@@ -7,13 +7,22 @@ router.post("/", async (req, res) => {
   const { code, redirect_uri } = req.body;
   const web = new WebClient();
   try {
-    const token = await web.oauth.access({
+    const auth = await web.oauth.access({
       code,
       client_id: process.env.SLACK_CLIENT_ID,
       client_secret: process.env.SLACK_CLIENT_SECRET,
       redirect_uri
     });
-    res.status(200).send(token);
+
+    const userInfo = await web.users.profile.get({
+      token: auth.access_token
+    });
+    res.status(200).send({
+      id: auth.user_id,
+      token: auth.access_token,
+      email: userInfo.profile.email,
+      image: userInfo.profile.image_24
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send(error);
